@@ -40,7 +40,7 @@
       },
       "description": "Switch to last Chrome window"
     },
-    "merge_window_to_main": {
+    "join_current_window": {
       "suggested_key": {
         "default": "Ctrl+Shift+Home"
       },
