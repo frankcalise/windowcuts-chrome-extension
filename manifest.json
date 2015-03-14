@@ -7,13 +7,6 @@
   "author": {
     "name": "Frank Calise"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:frankcalise/windowcuts-chrome-extension.git"
-  },
-  "bugs": {
-    "url": "https://github.com/frankcalise/windowcuts-chrome-extension/issues"
-  },
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -29,11 +22,29 @@
     "tabs"
   ],
   "commands": {
-    "switch_window_focus": {
-
+    "switch_window_focus1": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+1"
+      },
+      "description": "Switch to first Chrome window"
+    },
+    "switch_window_focus2": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+2"
+      },
+      "description": "Switch to second Chrome window"
+    },
+    "switch_window_focus9": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+9"
+      },
+      "description": "Switch to last Chrome window"
+    },
+    "merge_window_to_main": {
+      "suggested_key": {
+        "default": "Ctrl+Shift_Home"
+      },
+      "description": "Move all tabs from current window to main window"
     }
-  },
-  "keywords": [
-    "chrome", "extension", "keyboard", "shortcuts", "manage", "windows"
-  ]
+  }
 }
