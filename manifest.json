@@ -42,7 +42,7 @@
     },
     "merge_window_to_main": {
       "suggested_key": {
-        "default": "Ctrl+Shift_Home"
+        "default": "Ctrl+Shift+Home"
       },
       "description": "Move all tabs from current window to main window"
     }
