@@ -6,21 +6,11 @@ chrome.commands.onCommand.addListener(function(command) {
 	if (command.indexOf('switch_window_focus') == 0) {
 		setFocusWindow(command.slice(-1));
 	}
+
+	if (command == 'join_current_window') {
+		joinWindow();
+	}
 });
-
-listWindows();
-
-function listWindows() {
-	var windows = chrome.windows.getAll({ populate: true}, function(windows) {
-		windows.forEach(function(window) {
-			console.log('window id: ' + window.id)
-			window.tabs.forEach(function(tab) {
-				// collect all the tab urls here
-				console.log(tab.url + ' ' + tab.title);
-			});
-		});
-	});
-}
 
 function setFocusWindow(index) {
 	var windows = chrome.windows.getAll(function(windows) {
@@ -35,4 +25,25 @@ function setFocusWindow(index) {
 			});	
 		}
 	});
+}
+
+function joinWindow() {
+	var win = chrome.windows.getCurrent({ populate: true }, function(win) {
+		var tabIds = [];
+		
+		// build tab id array
+		win.tabs.forEach(function(tab) {
+			tabIds.push(tab.id);
+		});
+
+		// get main window id
+		var wins = chrome.windows.getAll(function(wins) {
+			// move the tabs to the main window
+			chrome.tabs.move(tabIds, { windowId: wins[0].id, index: -1 });
+		});
+	});
+}
+
+function explodeWindow() {
+	// TODO - move tabs from current tab and to the right to a new chrome window
 }
