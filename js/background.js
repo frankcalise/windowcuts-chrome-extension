@@ -7,12 +7,20 @@ chrome.commands.onCommand.addListener(function(command) {
 		setFocusWindow(command.slice(-1));
 	}
 
-	if (command == 'join_current_window') {
-		joinWindow();
-	} else if (command == 'explode_current_tab') {
-		explodeTab();
-	} else if (command == 'explode_tabs_to_right') {
-		explodeTabsToRight();
+	switch(command) {
+		case 'join_current_window':
+			joinWindow();
+			break;
+		case 'join_current_tab':
+			joinTab();
+			break;
+		case 'explode_current_tab':
+			explodeTab();
+			break;
+		case 'explode_tabs_to_right':
+			explodeTabsToRight();
+		default:
+			break;
 	}
 });
 
@@ -38,20 +46,29 @@ function setFocusWindow(index) {
 function joinWindow() {
 	var win = chrome.windows.getCurrent({ populate: true }, function(win) {
 		var tabIds = [];
-		
+		var activeId = 0;
+
 		// build tab id array
 		win.tabs.forEach(function(tab) {
+			// save off active tab to set it active 
+			// after it joins the main window
+			if (tab.active) {
+				activeId = tab.id;
+			}
+
 			tabIds.push(tab.id);
 		});
 
 		// get main window id
-		var wins = chrome.windows.getAll(function(wins) {
+		var wins = chrome.windows.getAll({ populate: true }, function(wins) {
+			var tabCount = wins[0].tabs.length;
+
 			// move the tabs to the main window
 			chrome.tabs.move(tabIds, { windowId: wins[0].id, index: -1 });
+
+			chrome.tabs.update(activeId, { active: true} );
 		});
 	});
-
-	// TODO - select first joined tab
 }
 
 /**
