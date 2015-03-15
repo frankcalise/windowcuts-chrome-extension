@@ -25,14 +25,14 @@ chrome.commands.onCommand.addListener(function(command) {
 });
 
 function setFocusWindow(index) {
-	var windows = chrome.windows.getAll(function(windows) {
+	var wins = chrome.windows.getAll(function(wins) {
 		// indexes 1 through 8, go to that window, 
 		// index 9 give last window (consistent with tab shortcuts)
-		var idx = (index == 9 ? windows.length - 1 : index - 1);
+		var idx = (index == 9 ? wins.length - 1 : index - 1);
 		
 		// bounds check
-		if (idx < windows.length) {
-			var w = chrome.windows.get(windows[idx].id, { populate: true }, function(w) {
+		if (idx < wins.length) {
+			var w = chrome.windows.get(wins[idx].id, { populate: true }, function(w) {
 				
 			});	
 		}
@@ -67,6 +67,23 @@ function joinWindow() {
 			chrome.tabs.move(tabIds, { windowId: wins[0].id, index: -1 });
 
 			chrome.tabs.update(activeId, { active: true} );
+			chrome.windows.update( wins[0].id, { focused: true });
+		});
+	});
+}
+
+/**
+ * Take current tab and move to main, now focused, Chrome window.
+ */
+function joinTab() {
+	var wins = chrome.windows.getAll(function(wins) {
+		chrome.tabs.query({ currentWindow: true, active: true }, function(tabs) {
+			var tabIdx = tabs[0].id;
+			var winIdx = wins[0].id;
+
+			chrome.tabs.move(tabIdx, { windowId: winIdx, index: -1 });
+			chrome.tabs.update(tabIdx, { active: true } );
+			chrome.windows.update( winIdx, { focused: true });
 		});
 	});
 }
